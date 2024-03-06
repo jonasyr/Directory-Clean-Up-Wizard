@@ -1,4 +1,4 @@
-# Nested Empty Folder Cleaner
+# Directory Clean-Up Wizard
 
 This PowerShell script is designed to efficiently identify and remove empty folders, including those with nested empty subfolders, within a specified directory path. It provides a thorough cleanup by evaluating each folder and its subfolders, ensuring that any directory structure lacking files is removed. This approach helps in decluttering your file system by eliminating empty directories that may accumulate over time.
 
