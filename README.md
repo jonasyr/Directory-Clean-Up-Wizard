@@ -1,6 +1,6 @@
 # Nested Empty Folder Cleaner
 
-The Nested Empty Folder Cleaner is a PowerShell script for decluttering file systems by removing all empty folders, including nested ones. It efficiently identifies and deletes empty directories, ensuring a clean and organized file structure, suitable for managing large data volumes.
+This PowerShell script is designed to efficiently identify and remove empty folders, including those with nested empty subfolders, within a specified directory path. It provides a thorough cleanup by evaluating each folder and its subfolders, ensuring that any directory structure lacking files is removed. This approach helps in decluttering your file system by eliminating empty directories that may accumulate over time.
 
 ## Features
 
