@@ -32,9 +32,11 @@ To run the script, execute the following steps:
     ```powershell
     .\RemoveEmptyFolderScript.ps1
     ```
-4. Upon execution, the script prompts users to choose the deletion method.
+4. Upon execution, the script prompts users to choose the deletion method (1 or 2).
     - For non-recursive deletion, it efficiently removes empty top-level folders.
     - The recursive option performs a deep clean by removing all empty folders, including nested ones.
+    - ![image](https://github.com/jonasyr/Directory-Clean-Up-Wizard/assets/62521337/11e79335-04c0-41a3-9b89-e92313ba5d2c)
+
 4. When prompted, input the full path of the root directory you wish to clean up from empty folders.
 5. Confirm your input by typing `y` to start the deletion process or `n` to cancel.
 
