@@ -1,3 +1,14 @@
+# Initial prompt for the user to choose the mode of operation
+Write-Host "Select the mode of operation:"
+Write-Host "1 - Non-recursive (Delete top-level empty folders only)"
+Write-Host "2 - Recursive (Delete all empty subfolders as well)"
+$modeSelection = Read-Host "Enter your choice (1 or 2)"
+
+if ($modeSelection -ne '1' -and $modeSelection -ne '2') {
+    Write-Host "Invalid selection. Exiting script."
+    exit
+}
+
 # Before starting the folder processing
 $global:startTime = Get-Date
 $global:foldersProcessed = 0
@@ -35,6 +46,31 @@ $scriptPath = Join-Path -Path $scriptLocation -ChildPath "ProgressDisplayScript.
 $command = "& `"$scriptPath`" -ProgressFilePath `"$progressFilePath`""
 $encodedCommand = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($command))
 $process = Start-Process powershell.exe -ArgumentList "-NoExit", "-EncodedCommand $encodedCommand" -PassThru
+
+
+function Remove-EmptyFoldersNonRecursive {
+    param (
+        [string]$path
+    )
+
+    $localItems = Get-ChildItem -Path $path -Directory
+    $localTotalFolders = $localItems.Count
+    $localProcessedFolders = 0
+
+    foreach ($item in $localItems) {
+        $localProcessedFolders++
+        # Check if the directory is empty
+        if ((Get-ChildItem -Path $item.FullName).Count -eq 0) {
+            Remove-Item $item.FullName -Force
+            Write-Host "Deleted empty folder: $($item.FullName)"
+            "$($item.FullName)" | Out-File -FilePath $logFilePath -Append -Encoding ASCII
+            $global:foldersDeleted++
+        }
+        $percentComplete = [math]::Round(($localProcessedFolders / $localTotalFolders) * 100, 2)
+        "$percentComplete" | Out-File $progressFilePath -Force -Encoding ASCII
+    }
+    $global:foldersProcessed += $localProcessedFolders
+}
 
 
 function Remove-EmptyFolders {
@@ -81,19 +117,25 @@ function Remove-EmptyFolders {
     # Do not increment the processedFolders here as it's handled outside this function for top-level folders only
 }
 
-# Calculate total number of top-level folders for progress calculation
-$topLevelFolders = (Get-ChildItem -Path $rootPath -Directory).Count
-$processedFolders = [ref]0
+# Based on the mode selection, choose the operation
+if ($modeSelection -eq '1') {
+    Remove-EmptyFoldersNonRecursive -path $rootPath
+} else {
+    # Calculate total number of top-level folders for progress calculation
+    $topLevelFolders = (Get-ChildItem -Path $rootPath -Directory).Count
+    $processedFolders = [ref]0
 
-# Process each top-level folder and update progress
-Get-ChildItem -Path $rootPath -Directory | ForEach-Object {
-    Remove-EmptyFolders -path $_.FullName -totalFolders $topLevelFolders -processedFolders $processedFolders
+    # Process each top-level folder and update progress
+    Get-ChildItem -Path $rootPath -Directory | ForEach-Object {
+        Remove-EmptyFolders -path $_.FullName -totalFolders $topLevelFolders -processedFolders $processedFolders
 
-    # Increment the processedFolders counter here, after each top-level folder is fully processed
-    $processedFolders.Value++
-    $percentComplete = [math]::Round(($processedFolders.Value / $topLevelFolders) * 100, 2)
-    "$percentComplete" | Out-File $progressFilePath -Force -Encoding ASCII
+        # Increment the processedFolders counter here, after each top-level folder is fully processed
+        $processedFolders.Value++
+        $percentComplete = [math]::Round(($processedFolders.Value / $topLevelFolders) * 100, 2)
+        "$percentComplete" | Out-File $progressFilePath -Force -Encoding ASCII
+    }
 }
+
 
 # After processing all folders:
 Write-Host "All folders processed."
