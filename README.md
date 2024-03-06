@@ -50,6 +50,8 @@ To run the script, execute the following steps:
 ## Logging
 
 The operation generates logs within a `logs` directory situated in the script's running location. Each log file is named after the operation's start date and time, facilitating easy identification and review. Logs detail the deletion of empty folders and provide a summary of the operation for record-keeping purposes.
+![image](https://github.com/jonasyr/Directory-Clean-Up-Wizard/assets/62521337/c3f31ab4-2f35-4efa-b10f-e005499b87d5)
+
 
 ## Contributing
 
