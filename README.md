@@ -1,10 +1,10 @@
 # Directory Clean-Up Wizard
 
-This PowerShell script is designed to efficiently identify and remove empty folders, including those with nested empty subfolders, within a specified directory path. It provides a thorough cleanup by evaluating each folder and its subfolders, ensuring that any directory structure lacking files is removed. This approach helps in decluttering your file system by eliminating empty directories that may accumulate over time.
+This PowerShell tool offers a dual-mode cleanup for your file system: select non-recursive for top-level empty directories or recursive for a deep clean, including nested empty folders. Tailored for efficient organization, it adapts to various cleanup preferences.
 
 ## Features
 
-- **Comprehensive Deletion**: Capable of removing not only standalone empty folders but also those containing nested empty subfolders.
+- **Mode Selection for Deletion Method**: Users can select either non-recursive deletion to remove top-level empty folders or recursive deletion for a comprehensive cleanup that includes all nested empty folders.
 - **User Interaction**: Prompts the user for the directory path to be cleaned, requiring confirmation to proceed with the deletion process.
 - **Progress Tracking**: Real-time visual display of the deletion progress through a secondary script.
 - **Logging**: Detailed logging of the operation, including start and end times, total folders evaluated, and specifics of each folder deletion.
@@ -32,6 +32,9 @@ To run the script, execute the following steps:
     ```powershell
     .\RemoveEmptyFolderScript.ps1
     ```
+4. Upon execution, the script prompts users to choose the deletion method.
+    - For non-recursive deletion, it efficiently removes empty top-level folders.
+    - The recursive option performs a deep clean by removing all empty folders, including nested ones.
 4. When prompted, input the full path of the root directory you wish to clean up from empty folders.
 5. Confirm your input by typing `y` to start the deletion process or `n` to cancel.
 
